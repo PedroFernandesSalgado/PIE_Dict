@@ -19,301 +19,149 @@ header {
   padding: 24px 32px 16px;
   border-bottom: 1px solid #e0e0e0;
 }
-
 header h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
 header p  { color: #555; font-size: 0.88rem; }
 
-main { max-width: 1200px; margin: 0 auto; padding: 20px 32px 60px; }
+main { max-width: 1280px; margin: 0 auto; padding: 16px 32px 60px; }
 
-/* ── Loading / error ── */
-#status-bar {
-  padding: 10px 0;
-  font-size: 0.85rem;
-  color: #555;
-  min-height: 24px;
-}
+#status-bar { padding: 8px 0; font-size: 0.85rem; color: #555; min-height: 22px; }
 #status-bar.error { color: #c0392b; }
 
-/* ── Controls ── */
+/* ── Top controls (clades, show, include-desc only) ── */
 .controls {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   align-items: flex-end;
 }
 
-.ctrl {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
+.ctrl { display: flex; flex-direction: column; gap: 3px; }
 .ctrl label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #666;
+  font-size: 0.71rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em; color: #666;
 }
 
-.ctrl input[type="text"],
-.ctrl input[type="search"] {
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  padding: 5px 8px;
-  font-size: 0.88rem;
-  outline: none;
-  width: 220px;
-}
-
-.ctrl input:focus { border-color: #4a90d9; }
-
-/* Custom multi-select dropdown */
-.multi-select-wrap {
+/* Multi-select dropdown */
+.ms-wrap { position: relative; }
+.ms-btn {
+  border: 1px solid #ccc; border-radius: 3px;
+  padding: 4px 26px 4px 8px; font-size: 0.88rem;
+  background: #fff; cursor: pointer; min-width: 150px;
+  text-align: left; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; color: #111; height: 28px;
   position: relative;
 }
-
-.multi-select-btn {
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  padding: 5px 28px 5px 8px;
-  font-size: 0.88rem;
-  background: #fff;
-  cursor: pointer;
-  min-width: 160px;
-  text-align: left;
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #111;
-  height: 29px;
+.ms-btn::after {
+  content: '▾'; position: absolute; right: 7px; top: 50%;
+  transform: translateY(-50%); color: #666; font-size: 0.78rem;
 }
-
-.multi-select-btn::after {
-  content: '▾';
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
-  font-size: 0.8rem;
+.ms-btn:focus { outline: none; border-color: #4a90d9; }
+.ms-drop {
+  display: none; position: absolute; top: calc(100% + 2px); left: 0;
+  background: #fff; border: 1px solid #ccc; border-radius: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12); z-index: 300;
+  min-width: 190px; max-height: 260px; overflow-y: auto;
 }
-
-.multi-select-btn:focus { outline: none; border-color: #4a90d9; }
-
-.multi-select-dropdown {
-  display: none;
-  position: absolute;
-  top: calc(100% + 2px);
-  left: 0;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-  z-index: 200;
-  min-width: 200px;
-  max-height: 280px;
-  overflow-y: auto;
+.ms-drop.open { display: block; }
+.ms-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 11px; cursor: pointer; font-size: 0.87rem; user-select: none;
 }
+.ms-opt:hover { background: #f5f5f5; }
+.ms-opt input[type="checkbox"] { margin: 0; cursor: pointer; flex-shrink: 0; }
+.ms-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
-.multi-select-dropdown.open { display: block; }
-
-.ms-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 0.88rem;
-  user-select: none;
-}
-
-.ms-option:hover { background: #f5f5f5; }
-.ms-option input[type="checkbox"] { margin: 0; cursor: pointer; }
-
-.ms-option .dot {
-  width: 10px; height: 10px;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-/* Show + clade-match selects */
 .ctrl select {
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  padding: 5px 8px;
-  font-size: 0.88rem;
-  background: #fff;
-  outline: none;
-  cursor: pointer;
-  height: 29px;
+  border: 1px solid #ccc; border-radius: 3px;
+  padding: 4px 8px; font-size: 0.88rem; background: #fff;
+  outline: none; cursor: pointer; height: 28px;
 }
-
 .ctrl select:focus { border-color: #4a90d9; }
 
-/* Include descendants checkbox */
 .incl-desc {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.85rem;
-  color: #333;
-  cursor: pointer;
-  padding-top: 18px; /* align with other controls */
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.85rem; color: #333; cursor: pointer; padding-top: 17px;
 }
-
 .incl-desc input { cursor: pointer; }
 
 /* ── Stats ── */
-.stats-bar {
-  font-size: 0.82rem;
-  color: #666;
-  margin-bottom: 8px;
-}
+.stats-bar { font-size: 0.82rem; color: #666; margin-bottom: 6px; }
 
 /* ── Table ── */
-.table-wrap {
-  overflow-x: auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-}
+.table-wrap { overflow-x: auto; border: 1px solid #e0e0e0; border-radius: 4px; }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
 
-thead { background: #fafafa; border-bottom: 2px solid #e0e0e0; }
+thead { background: #fafafa; }
 
+/* header row */
 th {
-  padding: 8px 12px;
-  text-align: left;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #555;
-  cursor: pointer;
-  white-space: nowrap;
-  user-select: none;
-}
-
-th:hover { color: #4a90d9; }
-th.sorted { color: #4a90d9; }
-
-th .si { margin-left: 3px; opacity: 0.5; }
-th.sorted .si { opacity: 1; }
-
-/* column search row */
-.csrow td {
-  padding: 4px 6px;
-  background: #f7f7f7;
+  padding: 7px 10px 4px;
+  text-align: left; font-size: 0.71rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em; color: #555;
+  cursor: pointer; white-space: nowrap; user-select: none;
   border-bottom: 1px solid #e8e8e8;
 }
+th:hover { color: #4a90d9; }
+th.sorted { color: #4a90d9; }
+th .si { margin-left: 3px; opacity: 0.45; font-size: 0.68rem; }
+th.sorted .si { opacity: 1; }
 
-.csrow input {
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  padding: 3px 6px;
-  font-size: 0.8rem;
-  outline: none;
-  background: #fff;
+/* search inputs row — lives inside thead */
+.sr td {
+  padding: 3px 6px 6px;
+  background: #fafafa;
+  border-bottom: 2px solid #d8d8d8;
 }
-
-.csrow input:focus { border-color: #4a90d9; }
+.sr input {
+  width: 100%; border: 1px solid #d0d0d0; border-radius: 2px;
+  padding: 3px 6px; font-size: 0.82rem; outline: none; background: #fff;
+  font-family: inherit;
+}
+.sr input:focus { border-color: #4a90d9; }
+/* root search uses PIE-style monospace hint */
+.sr input.root-inp { font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.82rem; }
 
 td {
-  padding: 8px 12px;
+  padding: 7px 10px;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
 }
-
 tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: #fafafa; }
 
-/* root cell — clickable link style */
 .root-link {
-  color: #1a6fb0;
-  cursor: pointer;
+  color: #1a6fb0; cursor: pointer;
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: 0.9rem;
-  text-decoration: none;
 }
 .root-link:hover { text-decoration: underline; }
 
-/* parent cell */
-.par-link {
-  color: #1a6fb0;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
+.par-link { color: #1a6fb0; cursor: pointer; font-size: 0.85rem; }
 .par-link:hover { text-decoration: underline; }
 
-/* lang badge */
 .lang-badge {
-  display: inline-block;
-  background: #f0f4f8;
-  border: 1px solid #d0dce8;
-  border-radius: 3px;
-  padding: 1px 6px;
-  font-size: 0.75rem;
-  color: #3a5a7a;
-  white-space: nowrap;
+  display: inline-block; background: #f0f4f8; border: 1px solid #d0dce8;
+  border-radius: 3px; padding: 1px 6px; font-size: 0.75rem; color: #3a5a7a; white-space: nowrap;
 }
 
-/* meaning */
-.meaning-cell { color: #222; }
-
-/* clade cell */
-.clade-cell {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-}
-
+.clade-cell { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
 .clade-count { font-weight: 600; font-size: 0.82rem; color: #444; min-width: 16px; }
-
 .clade-squares { display: flex; gap: 2px; }
+.csq { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
 
-.csq {
-  width: 12px; height: 12px;
-  border-radius: 2px;
-  flex-shrink: 0;
-  cursor: default;
-}
-
-/* Empty / loading */
-.empty-row td {
-  text-align: center;
-  padding: 40px;
-  color: #888;
-}
+.empty-row td { text-align: center; padding: 40px; color: #888; }
 
 /* Pagination */
 .pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  margin-top: 16px;
-  font-size: 0.82rem;
+  display: flex; justify-content: center; align-items: center;
+  gap: 4px; margin-top: 14px; font-size: 0.82rem;
 }
-
 .pg-btn {
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  padding: 4px 10px;
-  background: #fff;
-  cursor: pointer;
-  color: #333;
-  font-size: 0.82rem;
+  border: 1px solid #ccc; border-radius: 3px; padding: 3px 9px;
+  background: #fff; cursor: pointer; color: #333; font-size: 0.82rem;
 }
-
 .pg-btn:hover:not(:disabled) { border-color: #4a90d9; color: #4a90d9; }
 .pg-btn:disabled { opacity: 0.4; cursor: default; }
 .pg-btn.cur { background: #4a90d9; color: #fff; border-color: #4a90d9; }
@@ -332,32 +180,14 @@ tbody tr:hover { background: #fafafa; }
 
   <div id="app" style="display:none">
 
-    <!-- Controls -->
+    <!-- Top controls: only the "global" filters that don't belong over a column -->
     <div class="controls">
 
       <div class="ctrl">
-        <label>Root</label>
-        <input type="search" id="f-root" placeholder="e.g. bher, sew, h₂eg…" autocomplete="off" spellcheck="false">
-      </div>
-
-      <div class="ctrl">
-        <label>Meaning</label>
-        <input type="text" id="f-meaning" placeholder="e.g. carry, water…" autocomplete="off">
-      </div>
-
-      <div class="ctrl">
-        <label>Language</label>
-        <div class="multi-select-wrap" id="lang-wrap">
-          <button class="multi-select-btn" id="lang-btn" type="button">All languages</button>
-          <div class="multi-select-dropdown" id="lang-dropdown"></div>
-        </div>
-      </div>
-
-      <div class="ctrl">
         <label>Clades</label>
-        <div class="multi-select-wrap" id="clade-wrap">
-          <button class="multi-select-btn" id="clade-btn" type="button">All clades</button>
-          <div class="multi-select-dropdown" id="clade-dropdown"></div>
+        <div class="ms-wrap">
+          <button class="ms-btn" id="clade-btn" type="button">All clades</button>
+          <div class="ms-drop" id="clade-drop"></div>
         </div>
       </div>
 
@@ -390,7 +220,7 @@ tbody tr:hover { background: #fafafa; }
       <table id="tbl">
         <thead>
           <tr id="hdr-row"></tr>
-          <tr class="csrow" id="cs-row"></tr>
+          <tr class="sr" id="sr-row"></tr>
         </thead>
         <tbody id="tbl-body"></tbody>
       </table>
@@ -401,525 +231,480 @@ tbody tr:hover { background: #fafafa; }
 </main>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CHAR_EXPANSIONS — full port from Python
-// ═══════════════════════════════════════════════════════
-const CHAR_EXPANSIONS = {
-  'a': '(?:V|V\u0301|V\u0304|V\u0304\u0301|a|\u00e1|\u00e1|\u0101|\u0101|\u0101\u0301|\u0101\u0301)',
-  'e': '(?:V|V\u0301|V\u0304|V\u0304\u0301|e|\u00e9|\u00e9|\u0113|\u0113|\u1e17|\u1e17|\u1e17)',
-  'i': '(?:V|V\u0301|V\u0304|V\u0304\u0301|i|\u00ed|\u00ed|\u012b|\u012b|\u012b\u0301|\u012b\u0301)',
-  'o': '(?:V|V\u0301|V\u0304|V\u0304\u0301|o|\u00f3|\u00f3|\u014d|\u014d|\u1e53|\u1e53|\u1e53)',
-  'u': '(?:V|V\u0301|V\u0304|V\u0304\u0301|u|\u00fa|\u00fa|\u016b|\u016b|\u016b\u0301|\u016b\u0301)',
-
+// ══════════════════════════════════════════════════════════════════════
+// CHAR_EXPANSIONS — exact copy of the Python dict, expressed as JS
+// (using \uXXXX escapes for all non-ASCII)
+// ══════════════════════════════════════════════════════════════════════
+const CE = {
+  // plain vowels
+  'a': '(?:V|V\u0301|V\u0304|V\u0304\u0301|a|\u00e1|\u0101|\u0101\u0301)',
+  'e': '(?:V|V\u0301|V\u0304|V\u0304\u0301|e|\u00e9|\u0113|\u1e17)',
+  'i': '(?:V|V\u0301|V\u0304|V\u0304\u0301|i|\u00ed|\u012b|\u012b\u0301)',
+  'o': '(?:V|V\u0301|V\u0304|V\u0304\u0301|o|\u00f3|\u014d|\u1e53)',
+  'u': '(?:V|V\u0301|V\u0304|V\u0304\u0301|u|\u00fa|\u016b|\u016b\u0301)',
+  // starred vowels (exact only)
   'a*': '(?:V|a)',
   'e*': '(?:V|e)',
   'i*': '(?:V|i)',
   'o*': '(?:V|o)',
   'u*': '(?:V|u)',
-
-  '\u00e1': '(?:V\u0301|V\u0304\u0301|\u00e1|\u00e1|\u0101\u0301|\u0101\u0301)',
-  '\u0101': '(?:V\u0304|V\u0304\u0301|\u0101|\u0101|\u0101\u0301|\u0101\u0301)',
-  '\u0101\u0301': '(?:V\u0304\u0301|\u0101\u0301|\u0101\u0301)',
-
-  '\u00e9': '(?:V\u0301|V\u0304\u0301|\u00e9|\u00e9|\u1e17|\u1e17|\u1e17)',
-  '\u0113': '(?:V\u0304|V\u0304\u0301|\u0113|\u0113|\u1e17|\u1e17|\u1e17)',
-  '\u1e17': '(?:V\u0304\u0301|\u1e17|\u1e17|\u1e17)',
-
-  '\u00ed': '(?:V\u0301|V\u0304\u0301|\u00ed|\u00ed|\u012b\u0301|\u012b\u0301)',
-  '\u012b': '(?:V\u0304|V\u0304\u0301|\u012b|\u012b|\u012b\u0301|\u012b\u0301)',
-  '\u012b\u0301': '(?:V\u0304\u0301|\u012b\u0301|\u012b\u0301)',
-
-  '\u00f3': '(?:V\u0301|V\u0304\u0301|\u00f3|\u00f3|\u1e53|\u1e53|\u1e53)',
-  '\u014d': '(?:V\u0304|V\u0304\u0301|\u014d|\u014d|\u1e53|\u1e53|\u1e53)',
-  '\u1e53': '(?:V\u0304\u0301|\u1e53|\u1e53|\u1e53)',
-
-  '\u00fa': '(?:V\u0301|V\u0304\u0301|\u00fa|\u00fa|\u016b\u0301|\u016b\u0301)',
-  '\u016b': '(?:V\u0304|V\u0304\u0301|\u016b|\u016b|\u016b\u0301|\u016b\u0301)',
-  '\u016b\u0301': '(?:V\u0304\u0301|\u016b\u0301|\u016b\u0301)',
-
+  // long/acute vowels
+  '\u00e1': '(?:V\u0301|V\u0304\u0301|\u00e1|\u0101\u0301)',
+  '\u0101': '(?:V\u0304|V\u0304\u0301|\u0101|\u0101\u0301)',
+  '\u0101\u0301': '(?:V\u0304\u0301|\u0101\u0301)',
+  '\u00e9': '(?:V\u0301|V\u0304\u0301|\u00e9|\u1e17)',
+  '\u0113': '(?:V\u0304|V\u0304\u0301|\u0113|\u1e17)',
+  '\u1e17': '(?:V\u0304\u0301|\u1e17)',
+  '\u00ed': '(?:V\u0301|V\u0304\u0301|\u00ed|\u012b\u0301)',
+  '\u012b': '(?:V\u0304|V\u0304\u0301|\u012b|\u012b\u0301)',
+  '\u012b\u0301': '(?:V\u0304\u0301|\u012b\u0301)',
+  '\u00f3': '(?:V\u0301|V\u0304\u0301|\u00f3|\u1e53)',
+  '\u014d': '(?:V\u0304|V\u0304\u0301|\u014d|\u1e53)',
+  '\u1e53': '(?:V\u0304\u0301|\u1e53)',
+  '\u00fa': '(?:V\u0301|V\u0304\u0301|\u00fa|\u016b\u0301)',
+  '\u016b': '(?:V\u0304|V\u0304\u0301|\u016b|\u016b\u0301)',
+  '\u016b\u0301': '(?:V\u0304\u0301|\u016b\u0301)',
+  // sonorants (plain + syllabic)
   'l': '(?:C|S|l|l\u0325|\u013a\u0325)',
   'm': '(?:C|S|m|m\u0325|\u1e3f\u0325)',
   'n': '(?:C|S|n|n\u0325|\u0144\u0325)',
   'r': '(?:C|S|r|r\u0325|\u0155\u0325)',
-
   'l*': '(?:C|S|l)',
   'm*': '(?:C|S|m)',
   'n*': '(?:C|S|n)',
   'r*': '(?:C|S|r)',
-
   'l\u0325': '(?:l\u0325|\u013a\u0325)',
   'm\u0325': '(?:m\u0325|\u1e3f\u0325)',
   'n\u0325': '(?:n\u0325|\u0144\u0325)',
   'r\u0325': '(?:r\u0325|\u0155\u0325)',
-
-  'g':   '(?:C|T|g|\u01f5)',
-  'k':   '(?:C|T|k|\u1e31)',
-  'g*':  '(?:C|T|g)',
-  'k*':  '(?:C|T|k)',
-  '\u01f5': '(?:C|T|\u01f5)',
-  '\u1e31': '(?:C|T|\u1e31)',
-  'gj':  '(?:C|T|\u01f5)',
-  'kj':  '(?:C|T|\u1e31)',
-
-  '\u01f5\u02b0':  '(?:C|T|\u01f5\u02b0)',
-  'g\u02b0':       '(?:C|T|g\u02b0)',
-  'g\u02b7':       '(?:C|T|g\u02b7)',
-  'g\u02b7\u02b0': '(?:C|T|g\u02b7\u02b0)',
-  'k\u02b7':       '(?:C|T|k\u02b7)',
-
+  // velars
+  'g':        '(?:C|T|g|\u01f5)',
+  'k':        '(?:C|T|k|\u1e31)',
+  'g*':       '(?:C|T|g)',
+  'k*':       '(?:C|T|k)',
+  '\u01f5':   '(?:C|T|\u01f5)',
+  '\u1e31':   '(?:C|T|\u1e31)',
+  'gj':       '(?:C|T|\u01f5)',
+  'kj':       '(?:C|T|\u1e31)',
+  '\u01f5\u02b0': '(?:C|T|\u01f5\u02b0)',
+  'g\u02b0':      '(?:C|T|g\u02b0)',
+  'g\u02b7':      '(?:C|T|g\u02b7)',
+  'g\u02b7\u02b0':'(?:C|T|g\u02b7\u02b0)',
+  'k\u02b7':      '(?:C|T|k\u02b7)',
+  // other obstruents
   'p': '[CTpP]',
   't': '[CTt]',
   'b': '[CTb]',
   'd': '[CTd]',
   's': '[CTs]',
-
   'b\u02b0': '(?:C|T|b\u02b0)',
   'd\u02b0': '(?:C|T|d\u02b0)',
-
-  'w': '(?:C|S|V|V\u0301|V\u0304|V\u0304\u0301|w|i|\u00ed|\u00ed|\u012b|\u012b|\u012b\u0301|\u012b\u0301)',
-  'y': '(?:C|S|V|V\u0301|V\u0304|V\u0304\u0301|y|u|\u00fa|\u00fa|\u016b|\u016b|\u016b\u0301|\u016b\u0301)',
+  // glides (syllabic + consonantal)
+  'w': '(?:C|S|V|V\u0301|V\u0304|V\u0304\u0301|w|i|\u00ed|\u012b|\u012b\u0301)',
+  'y': '(?:C|S|V|V\u0301|V\u0304|V\u0304\u0301|y|u|\u00fa|\u016b|\u016b\u0301)',
   'w*': '[CSw]',
   'y*': '[CSy]',
-
-  'h':    '(?:C|T|H|H\u0325|H\u0325\u0301|h[\u2081\u2082\u2083]|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
-  'h\u0325':   '(?:H\u0325|H\u0325\u0301|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
-  'h\u0325\u0301': '(?:H\u0325\u0301|h\u0325\u0301[\u2081\u2082\u2083])',
-  'H':    '(?:C|T|H|H\u0325|H\u0325\u0301|h[\u2081\u2082\u2083]|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
-  'H\u0325':   '(?:H\u0325|H\u0325\u0301)',
-  'H\u0325\u0301': 'H\u0325\u0301',
-
+  // laryngeals
+  'h':           '(?:C|T|H|H\u0325|H\u0325\u0301|h[\u2081\u2082\u2083]|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
+  'h\u0325':     '(?:H\u0325|H\u0325\u0301|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
+  'h\u0325\u0301':'(?:H\u0325\u0301|h\u0325\u0301[\u2081\u2082\u2083])',
+  'H':           '(?:C|T|H|H\u0325|H\u0325\u0301|h[\u2081\u2082\u2083]|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
+  'H\u0325':     '(?:H\u0325|H\u0325\u0301)',
+  'H\u0325\u0301':'H\u0325\u0301',
   'h\u2081': '(?:C|T|H|H\u0325|H\u0325\u0301|h\u2081|h\u0325\u2081|h\u0325\u0301\u2081)',
   'h\u2082': '(?:C|T|H|H\u0325|H\u0325\u0301|h\u2082|h\u0325\u2082|h\u0325\u0301\u2082)',
   'h\u2083': '(?:C|T|H|H\u0325|H\u0325\u0301|h\u2083|h\u0325\u2083|h\u0325\u0301\u2083)',
-
-  '\u02b0':   '\u02b0',
-  '\u02b7':   '\u02b7',
+  // modifiers standalone
+  '\u02b0':       '\u02b0',
+  '\u02b7':       '\u02b7',
   '\u02b7\u02b0': '\u02b7\u02b0',
-
+  // brackets and misc
   '(':  '[(\u207d]',
   ')':  '[\u207e)]',
   '\u207d': '\u207d',
   '\u207e': '\u207e',
   '-':  '-',
   ' ':  ' ',
-
-  // wildcards
-  'V':   '(?:V|V\u0301|V\u0304|V\u0304\u0301|a|\u00e1|\u00e1|\u0101|\u0101|\u0101\u0301|\u0101\u0301|e|\u00e9|\u00e9|\u0113|\u0113|\u1e17|\u1e17|\u1e17|i|\u00ed|\u00ed|\u012b|\u012b|\u012b\u0301|\u012b\u0301|o|\u00f3|\u00f3|\u014d|\u014d|\u1e53|\u1e53|\u1e53|u|\u00fa|\u00fa|\u016b|\u016b|\u016b\u0301|\u016b\u0301)',
-  'V\u0301':  '(?:V\u0301|V\u0304\u0301|\u00e1|\u00e1|\u0101\u0301|\u0101\u0301|\u00e9|\u00e9|\u1e17|\u1e17|\u1e17|\u00ed|\u00ed|\u012b\u0301|\u012b\u0301|\u00f3|\u00f3|\u1e53|\u1e53|\u1e53|\u00fa|\u00fa|\u016b\u0301|\u016b\u0301)',
-  'V\u0304':  '(?:V\u0304|V\u0304\u0301|\u0101|\u0101|\u0101\u0301|\u0101\u0301|\u0113|\u0113|\u1e17|\u1e17|\u1e17|\u012b|\u012b|\u012b\u0301|\u012b\u0301|\u014d|\u014d|\u1e53|\u1e53|\u1e53|\u016b|\u016b|\u016b\u0301|\u016b\u0301)',
-  'V\u0304\u0301': '(?:V\u0304\u0301|\u0101\u0301|\u0101\u0301|\u1e17|\u1e17|\u1e17|\u012b\u0301|\u012b\u0301|\u1e53|\u1e53|\u1e53|\u016b\u0301|\u016b\u0301)',
+  // WILDCARDS
+  'V':      '(?:V|V\u0301|V\u0304|V\u0304\u0301|a|\u00e1|\u0101|\u0101\u0301|e|\u00e9|\u0113|\u1e17|i|\u00ed|\u012b|\u012b\u0301|o|\u00f3|\u014d|\u1e53|u|\u00fa|\u016b|\u016b\u0301)',
+  'V\u0301':     '(?:V\u0301|V\u0304\u0301|\u00e1|\u0101\u0301|\u00e9|\u1e17|\u00ed|\u012b\u0301|\u00f3|\u1e53|\u00fa|\u016b\u0301)',
+  'V\u0304':     '(?:V\u0304|V\u0304\u0301|\u0101|\u0101\u0301|\u0113|\u1e17|\u012b|\u012b\u0301|\u014d|\u1e53|\u016b|\u016b\u0301)',
+  'V\u0304\u0301':'(?:V\u0304\u0301|\u0101\u0301|\u1e17|\u012b\u0301|\u1e53|\u016b\u0301)',
   'V*': '(?:V|a|e|i|o|u)',
-
   'C': '(?:C|T|S|m|n|p|t|\u1e31|k|k\u02b7|b|d|\u01f5|g|g\u02b7|b\u02b0|d\u02b0|\u01f5\u02b0|g\u02b0|g\u02b7\u02b0|s|h[\u2081\u2082\u2083]|H|r|l|y|w)',
   'T': '(?:C|T|p|t|\u1e31|k|k\u02b7|b|d|\u01f5|g|g\u02b7|b\u02b0|d\u02b0|\u01f5\u02b0|g\u02b0|g\u02b7\u02b0|s|h[\u2081\u2082\u2083]|H)',
   'S': '(?:C|S|l|m|n|r|w|y)',
-
-  'R':  '(?:C|S|l|l\u0325|\u013a\u0325|m|m\u0325|\u1e3f\u0325|n|n\u0325|\u0144\u0325|r|r\u0325|\u0155\u0325|H|H\u0325|H\u0325\u0301|h[\u2081\u2082\u2083]|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
-  'R\u0325':  '(?:l\u0325|\u013a\u0325|m\u0325|\u1e3f\u0325|n\u0325|\u0144\u0325|r\u0325|\u0155\u0325|H\u0325|H\u0325\u0301|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
+  'R':    '(?:C|S|l|l\u0325|\u013a\u0325|m|m\u0325|\u1e3f\u0325|n|n\u0325|\u0144\u0325|r|r\u0325|\u0155\u0325|H|H\u0325|H\u0325\u0301|h[\u2081\u2082\u2083]|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
+  'R\u0325': '(?:l\u0325|\u013a\u0325|m\u0325|\u1e3f\u0325|n\u0325|\u0144\u0325|r\u0325|\u0155\u0325|H\u0325|H\u0325\u0301|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083])',
   'R*': '(?:C|S|l|m|n|r|H|h[\u2081\u2082\u2083])',
-
-  'I':  '(?:C|S|V|V\u0301|V\u0304|V\u0304\u0301|w|u|\u00fa|\u00fa|\u016b|\u016b|\u016b\u0301|\u016b\u0301|y|i|\u00ed|\u00ed|\u012b|\u012b|\u012b\u0301|\u012b\u0301)',
+  'I':  '(?:C|S|V|V\u0301|V\u0304|V\u0304\u0301|w|u|\u00fa|\u016b|\u016b\u0301|y|i|\u00ed|\u012b|\u012b\u0301)',
   'I*': '(?:C|S|V|w|u|y|i)',
-
   'J':  '(?:C|S|V|V\u0301|V\u0304|V\u0304\u0301|l|l\u0325|m|m\u0325|n|n\u0325|r|r\u0325|H|H\u0325|h[\u2081\u2082\u2083]|h\u0325[\u2081\u2082\u2083]|w|u|\u00fa|\u016b|\u016b\u0301|y|i|\u00ed|\u012b|\u012b\u0301)',
   'J*': '(?:C|S|V|l|m|n|r|H|h[\u2081\u2082\u2083]|w|u|y|i)',
-
   'U':  '(?:V|V\u0301|V\u0304|V\u0304\u0301|l\u0325|m\u0325|n\u0325|r\u0325|H\u0325|H\u0325\u0301|h\u0325[\u2081\u2082\u2083]|h\u0325\u0301[\u2081\u2082\u2083]|a|\u00e1|\u0101|\u0101\u0301|e|\u00e9|\u0113|\u1e17|i|\u00ed|\u012b|\u012b\u0301|o|\u00f3|\u014d|\u1e53|u|\u00fa|\u016b|\u016b\u0301)',
 };
 
-// ─── query_to_pattern ────────────────────────────────────────────────────────
-// Exact port of the Python function, including the temp-encoding trick for
-// h+digit, aspiration, labialisation, etc.
+// Build a sorted key list (longest first) for greedy matching.
+// We must compare by Unicode codepoint length, not JS string length,
+// because JS strings are UTF-16 and combining chars are separate code units.
+// Here all keys are BMP so .length is fine, but we sort descending anyway.
+const CE_KEYS = Object.keys(CE).sort((a,b) => b.length - a.length);
 
-const ASPIRATABLE = new Set([...'bd\u01f5g']);   // b d ǵ g  (gʷ handled below)
-const LABIALIZABLE = new Set([...'kg']);
-const DIGIT_MAP = {'1':'\u2081','2':'\u2082','3':'\u2083','\u2081':'\u2081','\u2082':'\u2082','\u2083':'\u2083'};
+const DIGIT_MAP = {'1':'\u2081','2':'\u2082','3':'\u2083',
+                   '\u2081':'\u2081','\u2082':'\u2082','\u2083':'\u2083'};
+const ASPIRATABLE = ['b','d','\u01f5','g'];   // b d ǵ g
+const LABIALIZABLE = ['k','g'];
 
+// ── queryToPattern ──────────────────────────────────────────────────────────
+// Faithful port of the Python function.
+// The key insight: Python iterates over chars and uses str.replace() on the
+// whole pattern string for the h-digit, labialisation, and aspiration passes,
+// then does a character-by-character expansion at the end.
+// We must do the same.  The tricky part is that JS string indexing is by
+// UTF-16 code unit, but all the chars we care about are BMP (≤U+FFFF),
+// so .length and slicing work correctly here.
 function queryToPattern(query) {
-  // guard
   if (/[%789&|]/.test(query)) return '';
 
-  let pattern = query;
-
-  // Step 1: replace h/h̥/h̥́ + digit with encoded forms (using temp chars 7/8/9)
-  // We scan left-to-right so multi-char h sequences are handled
-  let p2 = '';
+  // ── Pass 1: h/H + digit → temp-encoded ──────────────────────────
+  // Python: scans left-to-right with i index; replaces "c + query[i+1]"
+  // We replicate by walking codepoints and collecting a new string.
+  let p = '';
   let qi = 0;
-  while (qi < pattern.length) {
-    // collect possible h token (h, h̥, h̥́)
-    let hTok = '';
-    if (pattern[qi] === 'h' || pattern[qi] === 'H') {
-      hTok = pattern[qi];
-      let k = qi+1;
-      // absorb combining ring below (U+0325) and combining acute (U+0301)
-      while (k < pattern.length && (pattern.codePointAt(k) === 0x0325 || pattern.codePointAt(k) === 0x0301)) {
-        hTok += pattern[k]; k++;
+  while (qi < query.length) {
+    const ch = query[qi];
+    if (ch === 'h' || ch === 'H') {
+      // collect the full h-token (h + optional ̥ (U+0325) + optional ́ (U+0301))
+      let tok = ch;
+      let k = qi + 1;
+      while (k < query.length &&
+             (query.charCodeAt(k) === 0x0325 || query.charCodeAt(k) === 0x0301)) {
+        tok += query[k++];
       }
-      const nextCh = pattern[k];
-      if (nextCh && DIGIT_MAP[nextCh]) {
+      const nextCh = k < query.length ? query[k] : '';
+      if (nextCh && DIGIT_MAP[nextCh] !== undefined) {
         const sub = DIGIT_MAP[nextCh];
-        const enc = {'h':'7','h\u0325':'8','h\u0325\u0301':'9','H':'7'}[hTok] || '7';
-        p2 += enc + sub;
-        qi = k+1;
+        const enc = tok === 'h' || tok === 'H' ? '7'
+                  : tok === 'h\u0325'           ? '8'
+                  : tok === 'h\u0325\u0301'     ? '9' : '7';
+        p += enc + sub;
+        qi = k + 1;
         continue;
       }
     }
-    p2 += pattern[qi]; qi++;
+    p += query[qi++];
   }
-  pattern = p2;
+  query = p;
 
-  pattern = pattern.replace(/gj/g, '\u01f5');   // gj → ǵ
-  pattern = pattern.replace(/w\*/g, '&');        // protect w*
+  // ── Pass 2: gj → ǵ ───────────────────────────────────────────────
+  query = query.split('gj').join('\u01f5');
 
-  // labialisation: kw → kʷ, gw → gʷ  (not w* which is now &)
+  // ── Pass 3: protect w* ────────────────────────────────────────────
+  query = query.split('w*').join('\x00WSTAR\x00');
+
+  // ── Pass 4: labialisation kw/gw → kʷ/gʷ ─────────────────────────
   for (const l of LABIALIZABLE) {
-    pattern = pattern.split(l + 'w').join(l + '\u02b7');
-    pattern = pattern.split(l + '\u207dw').join(l + '\u207d\u02b7');
-    pattern = pattern.split(l + '(w').join(l + '(\u02b7');
+    query = query.split(l + 'w').join(l + '\u02b7');
+    query = query.split(l + '\u207dw').join(l + '\u207d\u02b7');
+    query = query.split(l + '(w').join(l + '(\u02b7');
   }
 
-  // protect (gʷ) from aspiration pass
-  pattern = pattern.replace(/\(g\u02b7\)/g, '%');
+  // ── Pass 5: protect (gʷ) ─────────────────────────────────────────
+  query = query.split('(g\u02b7)').join('\x00GPAREN\x00');
 
-  // aspiration: bh → bʰ, dh → dʰ, ǵh → ǵʰ, gh → gʰ
+  // ── Pass 6: aspiration bh/dh/ǵh/gh → bʰ/dʰ/ǵʰ/gʰ ───────────────
   for (const a of ASPIRATABLE) {
-    // escape for regex safety — these are basic latin + ǵ
-    const re = new RegExp(a.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + 'h','g');
-    pattern = pattern.replace(re, a + '\u02b0');
+    query = query.split(a + 'h').join(a + '\u02b0');
   }
   // gʷh → gʷʰ
-  pattern = pattern.replace(/g\u02b7h/g, 'g\u02b7\u02b0');
-  // ʷ⁾h and ʷ)h
-  pattern = pattern.replace(/\u02b7\u207eh/g, '\u02b7\u207e\u02b0');
-  pattern = pattern.replace(/\u02b7\)h/g, '\u02b7)\u02b0');
+  query = query.split('g\u02b7h').join('g\u02b7\u02b0');
+  // ʷ⁾h / ʷ)h
+  query = query.split('\u02b7\u207eh').join('\u02b7\u207e\u02b0');
+  query = query.split('\u02b7)h').join('\u02b7)\u02b0');
 
-  // restore
-  pattern = pattern.replace(/%/g, '(g\u02b7)');
-  pattern = pattern.replace(/&/g, 'w*');
-  pattern = pattern.replace(/7/g, 'h');
-  pattern = pattern.replace(/8/g, 'h\u0325');
-  pattern = pattern.replace(/9/g, 'h\u0325\u0301');
+  // ── Pass 7: restore temporaries ──────────────────────────────────
+  query = query.split('\x00GPAREN\x00').join('(g\u02b7)');
+  query = query.split('\x00WSTAR\x00').join('w*');
+  // restore encoded h+digit
+  query = query.split('7').join('h');
+  query = query.split('8').join('h\u0325');
+  query = query.split('9').join('h\u0325\u0301');
+  // restore subscript digits (they may have been in the string)
+  // (already in their final form — nothing to do)
 
-  // Now expand character by character using CHAR_EXPANSIONS,
-  // trying longest match first. We must handle multi-codepoint keys.
+  // ── Pass 8: expand character-by-character ─────────────────────────
+  // Python uses: while i < len(pattern): try c+modifiers, check CE, advance
+  // The modifiers that can follow a char are:
+  //   * (U+002A), ́ (U+0301), ̄ (U+0304), ̥ (U+0325),
+  //   ʰ (U+02B0), ʷ (U+02B7), ₁₂₃ (U+2081-2083)
+  // We try to consume as many modifier code-units as possible, then check CE
+  // for decreasing lengths until we find a match.
+  const MODIFIER_CP = new Set([0x002A,0x0301,0x0304,0x0325,0x02B0,0x02B7,
+                                0x2081,0x2082,0x2083]);
+
   const result = [];
   let i = 0;
-  while (i < pattern.length) {
+  while (i < query.length) {
+    // collect base char + all following modifiers
+    let j = i + 1;
+    while (j < query.length && MODIFIER_CP.has(query.charCodeAt(j))) j++;
+    // try longest slice first, down to 1
     let matched = false;
-    // try lengths 6 down to 1 (some keys are long with combining chars)
-    for (let len = 6; len >= 1; len--) {
-      // slice by code units
-      const chunk = pattern.slice(i, i+len);
-      if (chunk in CHAR_EXPANSIONS) {
-        result.push(CHAR_EXPANSIONS[chunk]);
+    for (let len = j - i; len >= 1; len--) {
+      const chunk = query.slice(i, i + len);
+      if (chunk in CE) {
+        result.push(CE[chunk]);
         i += len;
         matched = true;
         break;
       }
     }
     if (!matched) {
-      // unknown — pass through escaped
-      result.push(pattern[i].replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+      result.push(query[i].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
       i++;
     }
   }
   return result.join('');
 }
 
-// ─── sub_parentheses ─────────────────────────────────────────────────────────
-// Port of Python sub_parentheses(root, keep_inner=True, joiner=" ")
-// Returns " v1 | v2 | … " string used in SearchRoot column
-// For search we don't call this here — SearchRoot is already pre-computed in the CSV.
-
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 let allRows = [];
 let cladeColumns = [];
-let activeLangs   = new Set();
-let activeClades  = new Set();
-let includeDesc   = false;
-let sortCol = 'Clade_Count';
-let sortAsc = false;
+let activeClades = new Set();
+let sortCol = 'Clade_Count', sortAsc = false;
 let page = 1;
 const PAGE_SIZE = 50;
 
-// per-column inline filters (root / meaning / lang / parent)
-let csFilters = { Root:'', Meanings:'', Lang:'', Parents:'' };
+// column search values — these are "simple" literal filters, not PIE-pattern
+// except Root/Parents which use the PIE search on SearchRoot/Parents raw string
+const CS = { Root:'', Parents:'', Meanings:'', Lang:'' };
 
 const NON_CLADE = new Set(['','Root','SearchRoot','Parents','Meanings','SearchMeanings','Lang','Clade_Count']);
-
 const CLADE_COLORS = {
-  'Albanian':    '#e05c5c',
-  'Anatolian':   '#c0392b',
-  'Armenian':    '#e87c3e',
-  'Balto-Slavic':'#d4a017',
-  'Celtic':      '#4caf50',
-  'Germanic':    '#1a8a5a',
-  'Hellenic':    '#2196f3',
-  'Indo-Iranic': '#7c4dff',
-  'Italic':      '#e91e8c',
-  'Tocharian':   '#00bcd4',
+  Albanian:'#e05c5c', Anatolian:'#c0392b', Armenian:'#e87c3e',
+  'Balto-Slavic':'#d4a017', Celtic:'#4caf50', Germanic:'#1a8a5a',
+  Hellenic:'#2196f3', 'Indo-Iranic':'#7c4dff', Italic:'#e91e8c', Tocharian:'#00bcd4',
 };
 
-// ═══════════════════════════════════════════════════════
-// CSV PARSER
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
+// CSV
+// ══════════════════════════════════════════════════════════════════════
 function parseCSV(text) {
   const lines = text.trim().split('\n');
-  const headers = parseCSVRow(lines[0]);
-  return lines.slice(1).filter(l => l.trim()).map(line => {
-    const vals = parseCSVRow(line);
+  const headers = parseRow(lines[0]);
+  return lines.slice(1).filter(l=>l.trim()).map(line=>{
+    const vals = parseRow(line);
     const obj = {};
-    headers.forEach((h,i) => obj[h] = (vals[i]??'').trim());
+    headers.forEach((h,i)=>{ obj[h]=(vals[i]??'').trim(); });
     return obj;
   });
 }
-
-function parseCSVRow(line) {
-  const result = [];
-  let cur = '', inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c==='"') { if (inQ && line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ; }
-    else if (c===',' && !inQ){result.push(cur);cur='';}
+function parseRow(line) {
+  const r=[]; let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(c===','&&!inQ){r.push(cur);cur='';}
     else cur+=c;
   }
-  result.push(cur);
-  return result;
+  r.push(cur); return r;
+}
+function parseParents(raw){
+  try{ return JSON.parse(raw.replace(/'/g,'"')); }catch{ return [raw]; }
 }
 
-function parseParents(raw) {
-  try {
-    return JSON.parse(raw.replace(/'/g,'"'));
-  } catch {
-    return [raw];
-  }
-}
-
-// ═══════════════════════════════════════════════════════
-// LOAD CSV from same-origin (GitHub Pages)
-// ═══════════════════════════════════════════════════════
-async function loadData() {
-  const statusEl = document.getElementById('status-bar');
-  try {
-    const resp = await fetch('pie_table.csv');
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const text = await resp.text();
-    const raw = parseCSV(text);
-    if (!raw.length) throw new Error('CSV is empty');
-
-    cladeColumns = Object.keys(raw[0]).filter(k => !NON_CLADE.has(k));
-
-    allRows = raw.map(r => ({
+// ══════════════════════════════════════════════════════════════════════
+// LOAD
+// ══════════════════════════════════════════════════════════════════════
+async function loadData(){
+  const sb=document.getElementById('status-bar');
+  try{
+    const resp=await fetch('pie_table.csv');
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const text=await resp.text();
+    const raw=parseCSV(text);
+    if(!raw.length) throw new Error('CSV is empty');
+    cladeColumns=Object.keys(raw[0]).filter(k=>!NON_CLADE.has(k));
+    allRows=raw.map(r=>({
       ...r,
-      _parents: parseParents(r['Parents'] || "['none']"),
-      _cladeCount: parseInt(r['Clade_Count']||0, 10),
+      _parents: parseParents(r['Parents']||"['none']"),
+      _cladeCount: parseInt(r['Clade_Count']||0,10),
     }));
-
-    statusEl.textContent = '';
+    sb.textContent='';
     buildUI();
-    document.getElementById('app').style.display = '';
+    document.getElementById('app').style.display='';
     renderTable();
-  } catch (err) {
-    statusEl.textContent = `Error loading pie_table.csv: ${err.message}`;
-    statusEl.className = 'error';
+  }catch(err){
+    sb.textContent=`Error loading pie_table.csv: ${err.message}`;
+    sb.className='error';
   }
 }
 
-// ═══════════════════════════════════════════════════════
-// BUILD UI COMPONENTS
-// ═══════════════════════════════════════════════════════
-function buildUI() {
-  buildMultiSelect(
-    'lang-btn', 'lang-dropdown',
-    [...new Set(allRows.map(r=>r['Lang']))].sort(),
-    activeLangs,
-    () => { page=1; renderTable(); },
-    null,
-    () => activeLangs.size===0 ? 'All languages' : `${activeLangs.size} selected`
-  );
-
-  buildMultiSelect(
-    'clade-btn', 'clade-dropdown',
-    cladeColumns,
-    activeClades,
-    () => { page=1; renderTable(); },
-    c => CLADE_COLORS[c] || '#999',
-    () => activeClades.size===0 ? 'All clades' : `${activeClades.size} selected`
-  );
-
-  buildTableHeaders();
-}
-
-function buildMultiSelect(btnId, dropId, options, activeSet, onChange, colorFn, labelFn) {
-  const btn = document.getElementById(btnId);
-  const drop = document.getElementById(dropId);
-  drop.innerHTML = '';
-
-  options.forEach(opt => {
-    const div = document.createElement('div');
-    div.className = 'ms-option';
-    const cb = document.createElement('input');
-    cb.type = 'checkbox';
-    cb.checked = activeSet.has(opt);
-    cb.addEventListener('change', () => {
-      if (cb.checked) activeSet.add(opt); else activeSet.delete(opt);
-      btn.textContent = labelFn();
-      onChange();
+// ══════════════════════════════════════════════════════════════════════
+// BUILD UI
+// ══════════════════════════════════════════════════════════════════════
+function buildUI(){
+  // clade multi-select
+  const cdrop=document.getElementById('clade-drop');
+  const cbtn=document.getElementById('clade-btn');
+  cladeColumns.forEach(c=>{
+    const div=document.createElement('div'); div.className='ms-opt';
+    const cb=document.createElement('input'); cb.type='checkbox';
+    cb.addEventListener('change',()=>{
+      if(cb.checked) activeClades.add(c); else activeClades.delete(c);
+      cbtn.textContent=activeClades.size===0?'All clades':`${activeClades.size} selected`;
+      page=1; renderTable();
     });
-    div.appendChild(cb);
-    if (colorFn) {
-      const dot = document.createElement('div');
-      dot.className = 'dot';
-      dot.style.background = colorFn(opt);
-      div.appendChild(dot);
-    }
-    div.appendChild(document.createTextNode(opt));
-    div.addEventListener('click', e => {
-      if (e.target !== cb) { cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); }
-    });
-    drop.appendChild(div);
+    const dot=document.createElement('div'); dot.className='ms-dot';
+    dot.style.background=CLADE_COLORS[c]||'#999';
+    div.appendChild(cb); div.appendChild(dot); div.appendChild(document.createTextNode(c));
+    div.addEventListener('click',e=>{ if(e.target!==cb){cb.checked=!cb.checked;cb.dispatchEvent(new Event('change'));} });
+    cdrop.appendChild(div);
   });
+  cbtn.addEventListener('click',e=>{ e.stopPropagation(); toggleDrop('clade-drop'); });
 
-  btn.textContent = labelFn();
-
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    const isOpen = drop.classList.contains('open');
-    closeAllDropdowns();
-    if (!isOpen) drop.classList.add('open');
-  });
+  buildHeaders();
 }
 
-function closeAllDropdowns() {
-  document.querySelectorAll('.multi-select-dropdown.open').forEach(d => d.classList.remove('open'));
+function toggleDrop(id){
+  const d=document.getElementById(id);
+  const wasOpen=d.classList.contains('open');
+  closeAllDrops();
+  if(!wasOpen) d.classList.add('open');
 }
+function closeAllDrops(){
+  document.querySelectorAll('.ms-drop.open').forEach(d=>d.classList.remove('open'));
+}
+document.addEventListener('click', closeAllDrops);
 
-document.addEventListener('click', closeAllDropdowns);
+// ── Table headers + inline search row ─────────────────────────────────
+const COLS = [
+  { key:'Root',        label:'Lemma',        search:true,  isPIE:true  },
+  { key:'Parents',     label:'Parent root',  search:true,  isPIE:false },
+  { key:'Meanings',    label:'Meaning',      search:true,  isPIE:false },
+  { key:'Lang',        label:'Language',     search:true,  isPIE:false },
+  { key:'Clade_Count', label:'# Clades',     search:false, isPIE:false },
+];
 
-function buildTableHeaders() {
-  const cols = [
-    { key:'Root',        label:'Lemma' },
-    { key:'Parents',     label:'Parent root' },
-    { key:'Meanings',    label:'Meaning' },
-    { key:'Lang',        label:'Language' },
-    { key:'Clade_Count', label:'# Clades' },
-  ];
+function buildHeaders(){
+  const hr=document.getElementById('hdr-row');
+  const sr=document.getElementById('sr-row');
+  hr.innerHTML=''; sr.innerHTML='';
 
-  const hr = document.getElementById('hdr-row');
-  const cs = document.getElementById('cs-row');
-  hr.innerHTML = '';
-  cs.innerHTML = '';
-
-  cols.forEach(col => {
-    const th = document.createElement('th');
-    const isSorted = sortCol === col.key;
-    th.className = isSorted ? 'sorted' : '';
-    const dir = isSorted ? (sortAsc ? '▲' : '▼') : '⇅';
-    th.innerHTML = `${col.label} <span class="si">${dir}</span>`;
-    th.addEventListener('click', () => {
-      if (sortCol===col.key) sortAsc=!sortAsc;
-      else { sortCol=col.key; sortAsc = col.key!=='Clade_Count'; }
-      page=1; buildTableHeaders(); renderTable();
+  COLS.forEach(col=>{
+    // header cell
+    const th=document.createElement('th');
+    th.className=sortCol===col.key?'sorted':'';
+    const dir=sortCol===col.key?(sortAsc?'▲':'▼'):'⇅';
+    th.innerHTML=`${col.label} <span class="si">${dir}</span>`;
+    th.addEventListener('click',()=>{
+      if(sortCol===col.key) sortAsc=!sortAsc;
+      else { sortCol=col.key; sortAsc=col.key!=='Clade_Count'; }
+      page=1; buildHeaders(); renderTable();
     });
     hr.appendChild(th);
 
-    const td = document.createElement('td');
-    if (col.key !== 'Clade_Count') {
-      const inp = document.createElement('input');
-      inp.type = 'text';
-      inp.placeholder = 'Filter…';
-      inp.value = csFilters[col.key]||'';
-      inp.addEventListener('input', () => {
-        csFilters[col.key] = inp.value;
-        page=1; renderTable();
-      });
+    // search cell
+    const td=document.createElement('td');
+    if(col.search){
+      const inp=document.createElement('input');
+      inp.type='text';
+      inp.placeholder=col.isPIE ? 'e.g. bher, h₂eg…' : 'Filter…';
+      if(col.isPIE) inp.className='root-inp';
+      inp.value=CS[col.key]||'';
+      inp.addEventListener('input',()=>{ CS[col.key]=inp.value; page=1; renderTable(); });
       td.appendChild(inp);
     }
-    cs.appendChild(td);
+    sr.appendChild(td);
   });
 }
 
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 // FILTERING
-// ═══════════════════════════════════════════════════════
-function getFilteredRows() {
-  const rootQ  = document.getElementById('f-root').value.trim();
-  const meanQ  = document.getElementById('f-meaning').value.trim();
-  const levelQ = document.getElementById('f-level').value;
-  const cladeM = document.getElementById('f-clade-match').value;
-  includeDesc  = document.getElementById('f-desc').checked;
+// The Python search() function logic, exactly replicated:
+//
+//   roots    → SearchRoot.str.contains(query_to_pattern(r), regex=True)
+//   parents  → Parents column (raw string) checked against pattern
+//   meanings → SearchMeanings.str.contains(m, case=False)
+//   langs    → Lang.str.contains(l, case=False)
+//   clades   → clade columns == 1
+//   level    → top_level_only / sub_roots_only
+//   include_descendants → BFS expand from matched set
+// ══════════════════════════════════════════════════════════════════════
+function getFilteredRows(){
+  const levelQ=document.getElementById('f-level').value;
+  const cladeM=document.getElementById('f-clade-match').value;
+  const incDesc=document.getElementById('f-desc').checked;
 
-  // Build regex for main root search
-  let rootPat = null;
-  if (rootQ) {
-    try { rootPat = new RegExp(queryToPattern(rootQ), 'u'); } catch { rootPat = null; }
+  // Build patterns for PIE root searches (Root column search and Parent column search)
+  let rootPat=null, parPat=null, meanRe=null, langRe=null;
+
+  if(CS.Root.trim()){
+    try{ rootPat=new RegExp(queryToPattern(CS.Root.trim()),'u'); }catch(e){}
+  }
+  if(CS.Parents.trim()){
+    // parents column: literal search on the raw parent string
+    try{ parPat=new RegExp(CS.Parents.trim().replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'iu'); }catch(e){}
+  }
+  if(CS.Meanings.trim()){
+    try{ meanRe=new RegExp(CS.Meanings.trim().replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'iu'); }catch(e){}
+  }
+  if(CS.Lang.trim()){
+    try{ langRe=new RegExp(CS.Lang.trim().replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'iu'); }catch(e){}
   }
 
-  // Simple literal patterns for column-search boxes
-  const csPatterns = {};
-  for (const [k,v] of Object.entries(csFilters)) {
-    if (v) {
-      try { csPatterns[k] = new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'iu'); } catch {}
+  let base=allRows.filter(row=>{
+    // root: test SearchRoot (pre-computed sub_parentheses output)
+    if(rootPat){
+      const sr=row['SearchRoot']||row['Root']||'';
+      if(!rootPat.test(sr)) return false;
     }
-  }
-
-  let base = allRows.filter(row => {
-    // main root search uses SearchRoot field
-    if (rootPat) {
-      const sr = row['SearchRoot'] || row['Root'] || '';
-      if (!rootPat.test(sr)) return false;
+    // parents literal filter
+    if(parPat){
+      const pStr=row['Parents']||'';
+      if(!parPat.test(pStr)) return false;
     }
-    // main meaning search uses SearchMeanings
-    if (meanQ) {
-      const sm = row['SearchMeanings'] || row['Meanings'] || '';
-      if (!sm.toLowerCase().includes(meanQ.toLowerCase())) return false;
+    // meaning: test SearchMeanings
+    if(meanRe){
+      const sm=row['SearchMeanings']||row['Meanings']||'';
+      if(!meanRe.test(sm)) return false;
     }
-    // language multi-select
-    if (activeLangs.size > 0 && !activeLangs.has(row['Lang'])) return false;
-
+    // lang
+    if(langRe){
+      if(!langRe.test(row['Lang']||'')) return false;
+    }
     // level
-    const isTop = row._parents.length===1 && row._parents[0]==='none';
-    if (levelQ==='top' && !isTop) return false;
-    if (levelQ==='sub' && isTop) return false;
-
-    // clade filter
-    if (activeClades.size > 0) {
-      const clades = [...activeClades];
-      if (cladeM==='all') { if (!clades.every(c => row[c]==='1')) return false; }
-      else { if (!clades.some(c => row[c]==='1')) return false; }
+    const isTop=row._parents.length===1&&row._parents[0]==='none';
+    if(levelQ==='top'&&!isTop) return false;
+    if(levelQ==='sub'&&isTop) return false;
+    // clades
+    if(activeClades.size>0){
+      const clades=[...activeClades];
+      if(cladeM==='all'){ if(!clades.every(c=>row[c]==='1')) return false; }
+      else              { if(!clades.some(c=>row[c]==='1'))  return false; }
     }
-
-    // column-search filters
-    if (csPatterns['Root'] && !csPatterns['Root'].test(row['Root']||'')) return false;
-    if (csPatterns['Meanings'] && !csPatterns['Meanings'].test(row['Meanings']||'')) return false;
-    if (csPatterns['Lang'] && !csPatterns['Lang'].test(row['Lang']||'')) return false;
-    if (csPatterns['Parents']) {
-      const pStr = (row._parents||[]).join(' ');
-      if (!csPatterns['Parents'].test(pStr)) return false;
-    }
-
     return true;
   });
 
-  // include_descendants: expand base set to include all rows whose
-  // parent chain traces back to a root in base
-  if (includeDesc) {
-    const baseRoots = new Set(base.map(r => (r['Root']||'').trim().split(',')[0].trim().replace(/^[\s*-]+|[\s*-]+$/g,'')));
-    const seen = new Set(base.map(r=>r['Root']));
-    let frontier = new Set(base.map(r => (r['Root']||'').trim()));
-    let changed = true;
-    while (changed) {
-      changed = false;
-      for (const row of allRows) {
-        if (seen.has(row['Root'])) continue;
-        const parents = row._parents.filter(p=>p!=='none').map(p=>p.trim());
-        if (parents.some(p => frontier.has(p))) {
+  // include_descendants BFS
+  if(incDesc){
+    // collect all matched Root values (trimmed)
+    const frontier=new Set(base.map(r=>(r['Root']||'').trim()));
+    const seen=new Set(frontier);
+    let changed=true;
+    while(changed){
+      changed=false;
+      for(const row of allRows){
+        const rk=(row['Root']||'').trim();
+        if(seen.has(rk)) continue;
+        const pars=row._parents.filter(p=>p!=='none').map(p=>p.trim());
+        if(pars.some(p=>frontier.has(p))){
           base.push(row);
-          seen.add(row['Root']);
-          frontier.add((row['Root']||'').trim());
-          changed = true;
+          seen.add(rk);
+          frontier.add(rk);
+          changed=true;
         }
       }
     }
@@ -928,141 +713,124 @@ function getFilteredRows() {
   return base;
 }
 
-function sortRows(rows) {
-  return [...rows].sort((a,b) => {
-    let av = a[sortCol], bv = b[sortCol];
-    if (sortCol==='Clade_Count') { av=parseInt(av)||0; bv=parseInt(bv)||0; }
-    else { av=String(av||'').toLowerCase(); bv=String(bv||'').toLowerCase(); }
-    if (av<bv) return sortAsc?-1:1;
-    if (av>bv) return sortAsc?1:-1;
+function sortRows(rows){
+  return [...rows].sort((a,b)=>{
+    let av=a[sortCol],bv=b[sortCol];
+    if(sortCol==='Clade_Count'){av=parseInt(av)||0;bv=parseInt(bv)||0;}
+    else{av=String(av||'').toLowerCase();bv=String(bv||'').toLowerCase();}
+    if(av<bv) return sortAsc?-1:1;
+    if(av>bv) return sortAsc?1:-1;
     return 0;
   });
 }
 
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 // RENDER
-// ═══════════════════════════════════════════════════════
-function cladeSquaresHTML(row) {
-  return cladeColumns
-    .filter(c => row[c]==='1')
-    .map(c => {
-      const col = CLADE_COLORS[c]||'#999';
-      return `<div class="csq" style="background:${col}" title="${esc(c)}"></div>`;
-    }).join('');
+// ══════════════════════════════════════════════════════════════════════
+function cladeHTML(row){
+  return cladeColumns.filter(c=>row[c]==='1')
+    .map(c=>`<div class="csq" style="background:${CLADE_COLORS[c]||'#999'}" title="${esc(c)}"></div>`)
+    .join('');
 }
 
-function renderTable() {
-  const filtered = sortRows(getFilteredRows());
-  const total = filtered.length;
-  const maxPage = Math.max(1, Math.ceil(total/PAGE_SIZE));
-  if (page > maxPage) page = maxPage;
+function cleanRoot(s){
+  // strip * and leading/trailing hyphens, take first comma-separated token
+  return s.trim().split(',')[0].trim().replace(/^\*+/,'').replace(/^-+|-+$/g,'');
+}
 
-  const slice = filtered.slice((page-1)*PAGE_SIZE, page*PAGE_SIZE);
-  const tbody = document.getElementById('tbl-body');
-  tbody.innerHTML = '';
+// When clicking a lemma or parent, we search for " X " (with spaces)
+// so it matches sub_parentheses output exactly (SearchRoot is " v1 | v2 ")
+function searchForRoot(rawRoot){
+  // put " X " in the Root column search box
+  const cleaned = cleanRoot(rawRoot);
+  CS.Root = ' ' + cleaned + ' ';
+  // update the visible input
+  const inp = document.querySelector('#sr-row td:first-child input');
+  if(inp) inp.value = CS.Root;
+  document.getElementById('f-desc').checked = true;
+  page=1; renderTable();
+}
 
-  if (!slice.length) {
-    const tr = document.createElement('tr');
-    tr.className = 'empty-row';
-    tr.innerHTML = '<td colspan="5">No results found.</td>';
+function renderTable(){
+  const filtered=sortRows(getFilteredRows());
+  const total=filtered.length;
+  const maxPage=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  if(page>maxPage) page=maxPage;
+
+  const slice=filtered.slice((page-1)*PAGE_SIZE, page*PAGE_SIZE);
+  const tbody=document.getElementById('tbl-body');
+  tbody.innerHTML='';
+
+  if(!slice.length){
+    const tr=document.createElement('tr');
+    tr.className='empty-row';
+    tr.innerHTML='<td colspan="5">No results found.</td>';
     tbody.appendChild(tr);
   } else {
-    slice.forEach(row => {
-      const tr = document.createElement('tr');
+    slice.forEach(row=>{
+      const rootDisplay=cleanRoot(row['Root']||'');
+      const parents=row._parents.filter(p=>p!=='none');
+      const count=row._cladeCount;
 
-      // Lemma (root) — strip leading * and trailing -
-      const rootRaw = cleanRoot(row['Root']||'');
-
-      // Parents
-      const parents = row._parents.filter(p=>p!=='none');
-
-      const count = row._cladeCount;
-
-      tr.innerHTML = `
-        <td><span class="root-link" data-root="${esc(rootRaw)}">${esc(rootRaw)}</span></td>
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td><span class="root-link" data-r="${esc(row['Root']||'')}">${esc(rootDisplay)}</span></td>
         <td>${parents.length
-          ? parents.map(p=>`<span class="par-link" data-root="${esc(cleanRoot(p))}">${esc(cleanRoot(p))}</span>`).join(', ')
+          ? parents.map(p=>`<span class="par-link" data-r="${esc(p)}">${esc(cleanRoot(p))}</span>`).join(', ')
           : '<span style="color:#bbb">—</span>'}</td>
-        <td class="meaning-cell">${esc(row['Meanings']||'')}</td>
+        <td>${esc(row['Meanings']||'')}</td>
         <td><span class="lang-badge">${esc(row['Lang']||'')}</span></td>
-        <td><div class="clade-cell"><span class="clade-count">${count}</span><div class="clade-squares">${cladeSquaresHTML(row)}</div></div></td>
+        <td><div class="clade-cell"><span class="clade-count">${count}</span><div class="clade-squares">${cladeHTML(row)}</div></div></td>
       `;
       tbody.appendChild(tr);
     });
 
-    // click delegation for root-link and par-link
-    tbody.querySelectorAll('.root-link, .par-link').forEach(el => {
-      el.addEventListener('click', () => {
-        const r = el.dataset.root;
-        document.getElementById('f-root').value = r;
-        document.getElementById('f-desc').checked = true;
-        includeDesc = true;
-        page = 1;
-        renderTable();
-      });
+    tbody.querySelectorAll('.root-link,.par-link').forEach(el=>{
+      el.addEventListener('click',()=> searchForRoot(el.dataset.r));
     });
   }
 
-  // stats
-  document.getElementById('stats').textContent =
-    `${total.toLocaleString()} result${total===1?'':'s'} (${allRows.length.toLocaleString()} total entries)`;
+  document.getElementById('stats').textContent=
+    `${total.toLocaleString()} result${total===1?'':'s'} of ${allRows.length.toLocaleString()} total entries`;
 
-  renderPagination(maxPage);
+  renderPages(maxPage);
 }
 
-function cleanRoot(s) {
-  // strip * and leading/trailing -  but preserve medial -
-  return s.trim().split(',')[0].trim().replace(/^\*+/,'').replace(/^-+|-+$/g,'');
-}
+function renderPages(maxPage){
+  const pg=document.getElementById('pagination');
+  pg.innerHTML='';
+  if(maxPage<=1) return;
 
-function renderPagination(maxPage) {
-  const pg = document.getElementById('pagination');
-  pg.innerHTML = '';
-  if (maxPage<=1) return;
-
-  const mkBtn = (label, pageNum, isCur, disabled) => {
-    const b = document.createElement('button');
-    b.className = 'pg-btn' + (isCur?' cur':'');
-    b.textContent = label;
-    b.disabled = disabled||false;
-    if (!disabled) b.addEventListener('click', ()=>{ page=pageNum; renderTable(); window.scrollTo(0,0); });
+  const mk=(label,pn,cur,dis)=>{
+    const b=document.createElement('button');
+    b.className='pg-btn'+(cur?' cur':'');
+    b.textContent=label; b.disabled=dis||false;
+    if(!dis) b.addEventListener('click',()=>{ page=pn; renderTable(); window.scrollTo(0,0); });
     return b;
   };
 
-  pg.appendChild(mkBtn('← Prev', page-1, false, page<=1));
-
-  const pages = [];
-  for (let p=1; p<=maxPage; p++) {
-    if (p===1||p===maxPage||Math.abs(p-page)<=2) pages.push(p);
-    else if (pages[pages.length-1]!=='…') pages.push('…');
+  pg.appendChild(mk('← Prev',page-1,false,page<=1));
+  const pages=[];
+  for(let p=1;p<=maxPage;p++){
+    if(p===1||p===maxPage||Math.abs(p-page)<=2) pages.push(p);
+    else if(pages[pages.length-1]!=='…') pages.push('…');
   }
-
-  pages.forEach(p => {
-    if (p==='…') {
-      const s=document.createElement('span'); s.className='pg-ellipsis'; s.textContent='…';
-      pg.appendChild(s);
-    } else {
-      pg.appendChild(mkBtn(p, p, p===page, false));
-    }
+  pages.forEach(p=>{
+    if(p==='…'){ const s=document.createElement('span');s.className='pg-ellipsis';s.textContent='…';pg.appendChild(s); }
+    else pg.appendChild(mk(p,p,p===page,false));
   });
-
-  pg.appendChild(mkBtn('Next →', page+1, false, page>=maxPage));
+  pg.appendChild(mk('Next →',page+1,false,page>=maxPage));
 }
 
-function esc(s) {
+function esc(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ═══════════════════════════════════════════════════════
-// EVENT WIRING
-// ═══════════════════════════════════════════════════════
-document.getElementById('f-root').addEventListener('input',      ()=>{ page=1; renderTable(); });
-document.getElementById('f-meaning').addEventListener('input',   ()=>{ page=1; renderTable(); });
-document.getElementById('f-level').addEventListener('change',    ()=>{ page=1; renderTable(); });
+// ── global controls wiring ──
+document.getElementById('f-level').addEventListener('change',()=>{ page=1; renderTable(); });
 document.getElementById('f-clade-match').addEventListener('change',()=>{ page=1; renderTable(); });
-document.getElementById('f-desc').addEventListener('change',     ()=>{ includeDesc=document.getElementById('f-desc').checked; page=1; renderTable(); });
+document.getElementById('f-desc').addEventListener('change',()=>{ page=1; renderTable(); });
 
-// ── Boot ──────────────────────────────────────────────
 loadData();
 </script>
 </body>
